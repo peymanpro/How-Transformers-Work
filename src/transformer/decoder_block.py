@@ -8,6 +8,7 @@ from src.transformer.attention_sublayer import (
 )
 from src.transformer.feed_forward import (
     FeedForwardNetwork,
+    FeedForwardResult,
 )
 from src.transformer.layer_norm import (
     LayerNormalization,
@@ -24,6 +25,7 @@ class TransformerDecoderBlockResult:
     input: Matrix
     attention: MultiHeadResult
     after_attention_sublayer: Matrix
+    feed_forward: FeedForwardResult
     feed_forward_output: Matrix
     output: Matrix
 
@@ -64,6 +66,19 @@ class TransformerDecoderBlock:
             dimension=model_dimension,
         )
 
+    @property
+    def attention_module(
+        self,
+    ) -> SyntheticMultiHeadAttention:
+        return self._attention
+
+    @property
+    def feed_forward_weights_1(self) -> Matrix:
+        return self._feed_forward.weights_1
+
+    @property
+    def feed_forward_weights_2(self) -> Matrix:
+        return self._feed_forward.weights_2
     def forward(
         self,
         inputs: Matrix,
@@ -100,8 +115,10 @@ class TransformerDecoderBlock:
             after_attention_sublayer=(
                 attention_sublayer_result.normalized_output
             ),
+            feed_forward=feed_forward_result,
             feed_forward_output=(
                 feed_forward_result.output
             ),
             output=output,
         )
+
