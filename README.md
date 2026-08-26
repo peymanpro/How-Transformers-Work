@@ -403,11 +403,11 @@ After attention mixes contextual information, each position passes through its o
 
 The project implements:
 
-```math
-FFN(x)
+$$
+\mathrm{FFN}(x)
 =
-\operatorname{ReLU}(xW_1+b_1)W_2+b_2
-```
+\mathrm{ReLU}\left(xW_1+b_1\right)W_2+b_2
+$$
 
 The architecture is:
 
