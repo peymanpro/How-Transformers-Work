@@ -24,6 +24,7 @@ class SyntheticMultiHeadAttention:
         head_dimension: int,
         focuses: list[int],
         seed: int = 42,
+        causal: bool = False,
     ) -> None:
         if model_dimension <= 0:
             raise ValueError(
@@ -51,12 +52,14 @@ class SyntheticMultiHeadAttention:
 
         self._model_dimension = model_dimension
         self._head_dimension = head_dimension
+        self._causal = causal
 
         self._heads = tuple(
             SyntheticAttentionHead(
                 model_dimension=model_dimension,
                 head_dimension=head_dimension,
                 focus=focus,
+                causal=causal,
             )
             for focus in focuses
         )
@@ -122,3 +125,4 @@ class SyntheticMultiHeadAttention:
             concatenated=concatenated,
             output=output,
         )
+

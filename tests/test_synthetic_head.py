@@ -121,3 +121,57 @@ def test_synthetic_head_should_reject_too_large_dimension() -> None:
     with pytest.raises(ValueError):
         head.forward(inputs)
 
+def test_synthetic_head_should_respect_causal_constraint() -> None:
+    head = SyntheticAttentionHead(
+        model_dimension=4,
+        head_dimension=2,
+        focus=0,
+        causal=True,
+    )
+
+    inputs = Matrix.from_values(
+        [
+            [1.0, 2.0, 3.0, 4.0],
+            [5.0, 6.0, 7.0, 8.0],
+            [9.0, 10.0, 11.0, 12.0],
+        ]
+    )
+
+    result = head.forward(inputs)
+
+    np.testing.assert_allclose(
+        result.weights.data,
+        np.array(
+            [
+                [1.0, 0.0, 0.0],
+                [1.0, 0.0, 0.0],
+                [1.0, 0.0, 0.0],
+            ]
+        ),
+    )
+
+
+def test_causal_head_should_never_attend_to_future_positions() -> None:
+    head = SyntheticAttentionHead(
+        model_dimension=4,
+        head_dimension=2,
+        focus=2,
+        causal=True,
+    )
+
+    inputs = Matrix.from_values(
+        [
+            [1.0, 2.0, 3.0, 4.0],
+            [5.0, 6.0, 7.0, 8.0],
+            [9.0, 10.0, 11.0, 12.0],
+        ]
+    )
+
+    result = head.forward(inputs)
+
+    weights = result.weights.data
+
+    for row in range(weights.shape[0]):
+        assert np.all(
+            weights[row, row + 1 :] == 0.0
+        )
