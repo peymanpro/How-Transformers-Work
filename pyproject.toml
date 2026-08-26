@@ -1,0 +1,26 @@
+[project]
+name = "how-transformers-work"
+version = "0.1.0"
+description = "A from-scratch exploration of how Transformer architectures work."
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.2,<3"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3,<9",
+    "ruff>=0.9,<1",
+    "mypy>=1.14,<2"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
