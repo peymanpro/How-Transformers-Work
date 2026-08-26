@@ -62,6 +62,11 @@ class VocabularyProjection:
     def vocabulary_size(self) -> int:
         return self._vocabulary_size
 
+    @property
+    def weights(self) -> Matrix:
+        return Matrix(
+            self._weights.data
+        )
     def forward(
         self,
         hidden_states: Matrix,
@@ -87,3 +92,4 @@ class VocabularyProjection:
                 logits.data + repeated_bias
             )
         )
+
