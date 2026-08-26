@@ -5,8 +5,12 @@ from dataclasses import dataclass
 from src.math.matrix import Matrix
 from src.transformer.decoder_block import (
     TransformerDecoderBlock,
+    TransformerDecoderBlockResult,
 )
 from src.transformer.embedding import TokenEmbedding
+from src.transformer.multi_head import (
+    SyntheticMultiHeadAttention,
+)
 from src.transformer.output_head import (
     TokenLogits,
     VocabularyProjection,
@@ -19,6 +23,7 @@ from src.transformer.positional_encoding import (
 @dataclass(frozen=True)
 class TransformerForwardResult:
     embeddings: Matrix
+    decoder: TransformerDecoderBlockResult
     decoder_output: Matrix
     logits: TokenLogits
 
@@ -61,6 +66,31 @@ class TinyTransformerLanguageModel:
             seed=seed,
         )
 
+    @property
+    def vocabulary_size(self) -> int:
+        return self._vocabulary_projection.vocabulary_size
+
+    @property
+    def vocabulary_weights(self) -> Matrix:
+        return self._vocabulary_projection.weights
+
+    @property
+    def attention_module(
+        self,
+    ) -> SyntheticMultiHeadAttention:
+        return self._decoder.attention_module
+
+    @property
+    def feed_forward_weights_1(self) -> Matrix:
+        return self._decoder.feed_forward_weights_1
+
+    @property
+    def feed_forward_weights_2(self) -> Matrix:
+        return self._decoder.feed_forward_weights_2
+
+    @property
+    def vocabulary_bias(self) -> Matrix:
+        return self._vocabulary_projection.bias
     def forward(
         self,
         token_ids: list[int],
@@ -85,6 +115,11 @@ class TinyTransformerLanguageModel:
 
         return TransformerForwardResult(
             embeddings=transformer_input,
+            decoder=decoder_result,
             decoder_output=decoder_result.output,
             logits=logits,
         )
+
+
+
+

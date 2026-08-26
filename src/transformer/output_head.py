@@ -67,6 +67,23 @@ class VocabularyProjection:
         return Matrix(
             self._weights.data
         )
+    @property
+    def bias(self) -> Matrix:
+        return Matrix(
+            self._bias.data
+        )
+    def replace_weights(
+        self,
+        weights: Matrix,
+    ) -> None:
+        if weights.shape != self._weights.shape:
+            raise ValueError(
+                "Replacement weights must match current weight shape."
+            )
+
+        self._weights = Matrix(
+            weights.data
+        )
     def forward(
         self,
         hidden_states: Matrix,
@@ -92,4 +109,6 @@ class VocabularyProjection:
                 logits.data + repeated_bias
             )
         )
+
+
 
