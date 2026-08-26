@@ -19,6 +19,7 @@ class SyntheticAttentionHead:
         model_dimension: int,
         head_dimension: int,
         focus: int,
+        causal: bool = False,
     ) -> None:
         if model_dimension <= 0:
             raise ValueError(
@@ -38,6 +39,7 @@ class SyntheticAttentionHead:
         self._model_dimension = model_dimension
         self._head_dimension = head_dimension
         self._focus = focus
+        self._causal = causal
 
     def forward(
         self,
@@ -64,7 +66,12 @@ class SyntheticAttentionHead:
         )
 
         for row in range(sequence_length):
-            if row < self._focus:
+            if self._causal:
+                if self._focus > row:
+                    weights[row, row] = 1.0
+                else:
+                    weights[row, self._focus] = 1.0
+            elif row < self._focus:
                 weights[row, row] = 1.0
             else:
                 weights[row, self._focus] = 1.0
@@ -86,3 +93,5 @@ class SyntheticAttentionHead:
             weights=Matrix(weights),
             output=Matrix(output),
         )
+
+
