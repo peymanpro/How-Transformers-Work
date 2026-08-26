@@ -124,3 +124,29 @@ def test_positional_encoding_should_be_addable_to_embeddings() -> None:
         embeddings.data[0]
         + np.array([0.0, 1.0, 0.0, 1.0]),
     )
+def test_token_embedding_should_apply_gradient() -> None:
+    embedding = TokenEmbedding(
+        vocabulary_size=3,
+        embedding_dimension=2,
+        seed=42,
+    )
+
+    before = embedding.weights.data
+
+    gradient = Matrix.from_values(
+        [
+            [1.0, 2.0],
+            [3.0, 4.0],
+            [5.0, 6.0],
+        ]
+    )
+
+    embedding.apply_gradient(
+        gradient=gradient,
+        learning_rate=0.1,
+    )
+
+    np.testing.assert_allclose(
+        embedding.weights.data,
+        before - 0.1 * gradient.data,
+    )

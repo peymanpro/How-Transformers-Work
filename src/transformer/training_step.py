@@ -57,12 +57,27 @@ class TransformerTrainingStep:
             forward_result=forward_result,
             output_gradient=output_gradient,
         )
-
-        model.apply_vocabulary_gradients(
-            weight_gradient=(
+        model.apply_gradients(
+            embedding_gradient=gradients.token_embedding,
+            attention_output_gradient=(
+                gradients.decoder.attention.attention.output_weights
+            ),
+            feed_forward_weights_1_gradient=(
+                gradients.decoder.feed_forward.weights_1
+            ),
+            feed_forward_bias_1_gradient=(
+                gradients.decoder.feed_forward.bias_1
+            ),
+            feed_forward_weights_2_gradient=(
+                gradients.decoder.feed_forward.weights_2
+            ),
+            feed_forward_bias_2_gradient=(
+                gradients.decoder.feed_forward.bias_2
+            ),
+            vocabulary_weights_gradient=(
                 gradients.vocabulary_weights
             ),
-            bias_gradient=(
+            vocabulary_bias_gradient=(
                 gradients.vocabulary_bias
             ),
             learning_rate=self._learning_rate,
@@ -71,3 +86,6 @@ class TransformerTrainingStep:
         return TrainingStepResult(
             loss=loss
         )
+
+
+

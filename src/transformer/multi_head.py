@@ -93,6 +93,25 @@ class SyntheticMultiHeadAttention:
         return Matrix(
             self._output_weights.data
         )
+    def apply_output_gradient(
+        self,
+        gradient: Matrix,
+        learning_rate: float,
+    ) -> None:
+        if not np.isfinite(learning_rate) or learning_rate <= 0.0:
+            raise ValueError(
+                "learning_rate must be positive and finite."
+            )
+
+        if gradient.shape != self._output_weights.shape:
+            raise ValueError(
+                "Output projection gradient shape does not match."
+            )
+
+        self._output_weights = Matrix(
+            self._output_weights.data
+            - learning_rate * gradient.data
+        )
     def forward(
         self,
         inputs: Matrix,
@@ -135,6 +154,7 @@ class SyntheticMultiHeadAttention:
             concatenated=concatenated,
             output=output,
         )
+
 
 
 
