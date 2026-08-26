@@ -93,3 +93,43 @@ def test_vocabulary_projection_should_reject_wrong_dimension() -> None:
 
     with pytest.raises(ValueError):
         projection.forward(hidden_states)
+def test_vocabulary_projection_should_update_weights_and_bias() -> None:
+    projection = VocabularyProjection(
+        model_dimension=2,
+        vocabulary_size=3,
+        seed=42,
+    )
+
+    weights_before = projection.weights.data
+    bias_before = projection.bias.data
+
+    weight_gradient = Matrix.from_values(
+        [
+            [1.0, 2.0, 3.0],
+            [4.0, 5.0, 6.0],
+        ]
+    )
+
+    bias_gradient = Matrix.from_values(
+        [
+            [0.5, -0.5, 1.0],
+        ]
+    )
+
+    projection.apply_gradients(
+        weight_gradient=weight_gradient,
+        bias_gradient=bias_gradient,
+        learning_rate=0.1,
+    )
+
+    np.testing.assert_allclose(
+        projection.weights.data,
+        weights_before
+        - 0.1 * weight_gradient.data,
+    )
+
+    np.testing.assert_allclose(
+        projection.bias.data,
+        bias_before
+        - 0.1 * bias_gradient.data,
+    )

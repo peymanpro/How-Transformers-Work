@@ -84,6 +84,36 @@ class VocabularyProjection:
         self._weights = Matrix(
             weights.data
         )
+    def apply_gradients(
+        self,
+        weight_gradient: Matrix,
+        bias_gradient: Matrix,
+        learning_rate: float,
+    ) -> None:
+        if not np.isfinite(learning_rate) or learning_rate <= 0.0:
+            raise ValueError(
+                "learning_rate must be positive and finite."
+            )
+
+        if weight_gradient.shape != self._weights.shape:
+            raise ValueError(
+                "Weight gradient shape must match weights."
+            )
+
+        if bias_gradient.shape != self._bias.shape:
+            raise ValueError(
+                "Bias gradient shape must match bias."
+            )
+
+        self._weights = Matrix(
+            self._weights.data
+            - learning_rate * weight_gradient.data
+        )
+
+        self._bias = Matrix(
+            self._bias.data
+            - learning_rate * bias_gradient.data
+        )
     def forward(
         self,
         hidden_states: Matrix,
@@ -109,6 +139,7 @@ class VocabularyProjection:
                 logits.data + repeated_bias
             )
         )
+
 
 
 
