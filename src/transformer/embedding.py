@@ -48,6 +48,11 @@ class TokenEmbedding:
     def vocabulary_size(self) -> int:
         return self._vocabulary_size
 
+    @property
+    def weights(self) -> Matrix:
+        return Matrix(
+            self._weights.data
+        )
     def encode(
         self,
         token_ids: list[int],
@@ -66,3 +71,4 @@ class TokenEmbedding:
         return Matrix(
             self._weights.data[token_ids]
         )
+
