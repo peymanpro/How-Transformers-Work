@@ -72,3 +72,40 @@ def test_multiple_training_steps_should_not_produce_non_finite_loss() -> None:
 
         assert result.loss == result.loss
         assert result.loss < float("inf")
+def test_training_should_change_transformer_internal_parameters() -> None:
+    model = create_model()
+
+    embedding_before = model._embedding.weights.data
+    attention_before = (
+        model.attention_module.output_weights.data
+    )
+    ffw1_before = model._decoder._feed_forward.weights_1.data
+    ffw2_before = model._decoder._feed_forward.weights_2.data
+
+    TransformerTrainingStep(
+        learning_rate=0.05,
+    ).run(
+        model=model,
+        token_ids=[0, 1, 2, 3],
+        targets=[1, 2, 3, 4],
+    )
+
+    assert not (
+        embedding_before
+        == model._embedding.weights.data
+    ).all()
+
+    assert not (
+        attention_before
+        == model.attention_module.output_weights.data
+    ).all()
+
+    assert not (
+        ffw1_before
+        == model._decoder._feed_forward.weights_1.data
+    ).all()
+
+    assert not (
+        ffw2_before
+        == model._decoder._feed_forward.weights_2.data
+    ).all()

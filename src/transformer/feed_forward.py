@@ -97,6 +97,58 @@ class FeedForwardNetwork:
     @property
     def bias_2(self) -> Matrix:
         return Matrix(self._bias_2.data)
+    def apply_gradients(
+        self,
+        weights_1_gradient: Matrix,
+        bias_1_gradient: Matrix,
+        weights_2_gradient: Matrix,
+        bias_2_gradient: Matrix,
+        learning_rate: float,
+    ) -> None:
+        if not np.isfinite(learning_rate) or learning_rate <= 0.0:
+            raise ValueError(
+                "learning_rate must be positive and finite."
+            )
+
+        if weights_1_gradient.shape != self._weights_1.shape:
+            raise ValueError(
+                "weights_1 gradient shape does not match."
+            )
+
+        if bias_1_gradient.shape != self._bias_1.shape:
+            raise ValueError(
+                "bias_1 gradient shape does not match."
+            )
+
+        if weights_2_gradient.shape != self._weights_2.shape:
+            raise ValueError(
+                "weights_2 gradient shape does not match."
+            )
+
+        if bias_2_gradient.shape != self._bias_2.shape:
+            raise ValueError(
+                "bias_2 gradient shape does not match."
+            )
+
+        self._weights_1 = Matrix(
+            self._weights_1.data
+            - learning_rate * weights_1_gradient.data
+        )
+
+        self._bias_1 = Matrix(
+            self._bias_1.data
+            - learning_rate * bias_1_gradient.data
+        )
+
+        self._weights_2 = Matrix(
+            self._weights_2.data
+            - learning_rate * weights_2_gradient.data
+        )
+
+        self._bias_2 = Matrix(
+            self._bias_2.data
+            - learning_rate * bias_2_gradient.data
+        )
     def forward(
         self,
         inputs: Matrix,
@@ -155,4 +207,5 @@ class FeedForwardNetwork:
         return Matrix(
             values.data + repeated_bias
         )
+
 

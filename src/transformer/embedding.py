@@ -53,6 +53,25 @@ class TokenEmbedding:
         return Matrix(
             self._weights.data
         )
+    def apply_gradient(
+        self,
+        gradient: Matrix,
+        learning_rate: float,
+    ) -> None:
+        if not np.isfinite(learning_rate) or learning_rate <= 0.0:
+            raise ValueError(
+                "learning_rate must be positive and finite."
+            )
+
+        if gradient.shape != self._weights.shape:
+            raise ValueError(
+                "Embedding gradient must match embedding weights."
+            )
+
+        self._weights = Matrix(
+            self._weights.data
+            - learning_rate * gradient.data
+        )
     def encode(
         self,
         token_ids: list[int],
@@ -71,4 +90,5 @@ class TokenEmbedding:
         return Matrix(
             self._weights.data[token_ids]
         )
+
 

@@ -102,6 +102,41 @@ class TinyTransformerLanguageModel:
             bias_gradient=bias_gradient,
             learning_rate=learning_rate,
         )
+    def apply_gradients(
+        self,
+        embedding_gradient: Matrix,
+        attention_output_gradient: Matrix,
+        feed_forward_weights_1_gradient: Matrix,
+        feed_forward_bias_1_gradient: Matrix,
+        feed_forward_weights_2_gradient: Matrix,
+        feed_forward_bias_2_gradient: Matrix,
+        vocabulary_weights_gradient: Matrix,
+        vocabulary_bias_gradient: Matrix,
+        learning_rate: float,
+    ) -> None:
+        self._embedding.apply_gradient(
+            gradient=embedding_gradient,
+            learning_rate=learning_rate,
+        )
+
+        self._decoder.attention_module.apply_output_gradient(
+            gradient=attention_output_gradient,
+            learning_rate=learning_rate,
+        )
+
+        self._decoder._feed_forward.apply_gradients(
+            weights_1_gradient=feed_forward_weights_1_gradient,
+            bias_1_gradient=feed_forward_bias_1_gradient,
+            weights_2_gradient=feed_forward_weights_2_gradient,
+            bias_2_gradient=feed_forward_bias_2_gradient,
+            learning_rate=learning_rate,
+        )
+
+        self._vocabulary_projection.apply_gradients(
+            weight_gradient=vocabulary_weights_gradient,
+            bias_gradient=vocabulary_bias_gradient,
+            learning_rate=learning_rate,
+        )
     def forward(
         self,
         token_ids: list[int],
@@ -130,6 +165,9 @@ class TinyTransformerLanguageModel:
             decoder_output=decoder_result.output,
             logits=logits,
         )
+
+
+
 
 
 
