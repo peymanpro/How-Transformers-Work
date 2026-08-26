@@ -12,6 +12,7 @@ from src.math.matrix import Matrix
 
 @dataclass(frozen=True)
 class MultiHeadResult:
+    head_weights: tuple[Matrix, ...]
     head_outputs: tuple[Matrix, ...]
     concatenated: Matrix
     output: Matrix
@@ -87,6 +88,11 @@ class SyntheticMultiHeadAttention:
     def model_dimension(self) -> int:
         return self._model_dimension
 
+    @property
+    def output_weights(self) -> Matrix:
+        return Matrix(
+            self._output_weights.data
+        )
     def forward(
         self,
         inputs: Matrix,
@@ -118,6 +124,10 @@ class SyntheticMultiHeadAttention:
         )
 
         return MultiHeadResult(
+            head_weights=tuple(
+                result.weights
+                for result in results
+            ),
             head_outputs=tuple(
                 result.output
                 for result in results
@@ -125,4 +135,6 @@ class SyntheticMultiHeadAttention:
             concatenated=concatenated,
             output=output,
         )
+
+
 
