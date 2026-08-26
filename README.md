@@ -467,11 +467,11 @@ The current block follows the classic post-normalization pattern used for educat
 In equations:
 
 ```math
-H_1 = \operatorname{LayerNorm}\left(X+\operatorname{MHA}(X)\right)
+H_1 = \mathrm{LayerNorm}\left(X+\mathrm{MHA}(X)\right)
 ```
 
 ```math
-H_2 = \operatorname{LayerNorm}\left(H_1+\operatorname{FFN}(H_1)\right)
+H_2 = \mathrm{LayerNorm}\left(H_1+\mathrm{FFN}(H_1)\right)
 ```
 
 That `H₂` is the block output.
@@ -584,7 +584,7 @@ The important gradient identity is:
 ```math
 \frac{\partial L}{\partial z}
 =
-P-\operatorname{onehot}(y)
+P-\mathrm{onehot}(y)
 ```
 
 The implementation uses a numerically stable log-sum-exp formulation rather than constructing unstable exponentials directly.
