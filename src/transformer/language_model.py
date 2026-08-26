@@ -91,6 +91,17 @@ class TinyTransformerLanguageModel:
     @property
     def vocabulary_bias(self) -> Matrix:
         return self._vocabulary_projection.bias
+    def apply_vocabulary_gradients(
+        self,
+        weight_gradient: Matrix,
+        bias_gradient: Matrix,
+        learning_rate: float,
+    ) -> None:
+        self._vocabulary_projection.apply_gradients(
+            weight_gradient=weight_gradient,
+            bias_gradient=bias_gradient,
+            learning_rate=learning_rate,
+        )
     def forward(
         self,
         token_ids: list[int],
@@ -119,6 +130,7 @@ class TinyTransformerLanguageModel:
             decoder_output=decoder_result.output,
             logits=logits,
         )
+
 
 
 
