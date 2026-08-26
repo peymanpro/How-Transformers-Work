@@ -82,6 +82,21 @@ class FeedForwardNetwork:
     def hidden_dimension(self) -> int:
         return self._hidden_dimension
 
+    @property
+    def weights_1(self) -> Matrix:
+        return Matrix(self._weights_1.data)
+
+    @property
+    def weights_2(self) -> Matrix:
+        return Matrix(self._weights_2.data)
+
+    @property
+    def bias_1(self) -> Matrix:
+        return Matrix(self._bias_1.data)
+
+    @property
+    def bias_2(self) -> Matrix:
+        return Matrix(self._bias_2.data)
     def forward(
         self,
         inputs: Matrix,
@@ -140,3 +155,4 @@ class FeedForwardNetwork:
         return Matrix(
             values.data + repeated_bias
         )
+
