@@ -2,6 +2,21 @@
 
 > **How does a Transformer turn contextual representations into learned next-token predictions?**
 
+<p align="center">
+  <img src="docs/assets/transformer-flow.gif" alt="Animated overview of the Transformer forward and training flow" width="100%" />
+</p>
+
+<p align="center">
+  <img src="docs/assets/transformer-architecture.svg" alt="Tiny Transformer forward path" width="49%" />
+  <img src="docs/assets/multi-head-detail.svg" alt="Trainable multi-head attention" width="49%" />
+</p>
+
+<p align="center">
+  <img src="docs/assets/block-detail.svg" alt="Transformer block composition" width="49%" />
+  <img src="docs/assets/training-backward.svg" alt="Training and backpropagation" width="49%" />
+</p>
+
+
 `HowTransformersWork` is a from-scratch **AI / deep-learning project** that assembles and trains a small Transformer-like language model using **Python and NumPy**.
 
 The project starts from the components already understood in [`HowAttentionWorks`](https://github.com/peymanpro/HowAttentionWorks) and moves one architectural level upward:
