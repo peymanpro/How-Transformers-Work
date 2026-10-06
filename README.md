@@ -722,61 +722,27 @@ The main language-model path therefore learns the attention projections themselv
 
 ---
 
-# Real Training Result
+# Training Result
 
-The final experiment used:
+The repository includes a deterministic next-token experiment on a tiny synthetic sequence.
 
-```text
-Training sequence:
-the cat drinks milk
-```
-
-with targets:
+The useful result is not a single loss value. The experiment demonstrates the complete optimization path:
 
 ```text
-cat drinks milk <eos>
+forward pass
+      ↓
+cross-entropy loss
+      ↓
+analytical gradients
+      ↓
+Q/K/V + W₀ + FFN + embedding + vocabulary updates
+      ↓
+updated model
+      ↓
+improved next-token predictions
 ```
 
-Before training:
-
-```text
-the    → target=cat     predicted=the
-cat    → target=drinks  predicted=the
-drinks → target=milk    predicted=the
-milk   → target=<eos>   predicted=the
-```
-
-The initial loss was:
-
-```text
-2.168449
-```
-
-After training:
-
-```text
-the    → cat
-cat    → drinks
-drinks → milk
-milk   → <eos>
-```
-
-with:
-
-```text
-Final Loss: 0.086673
-```
-
-The target-token probabilities after training were:
-
-```text
-the    → cat      0.905549
-cat    → drinks   0.904302
-drinks → milk     0.933308
-milk   → <eos>    0.928687
-```
-
-So the training experiment demonstrates a complete optimization path from sequence representations to improved next-token predictions.
+The automated tests verify that training changes the attention projections and improves the controlled training objective.
 
 ---
 
@@ -805,7 +771,6 @@ But it does **not** demonstrate that we have trained a modern GPT-like model.
 The implementation intentionally uses:
 
 ```text
-Synthetic / fixed attention routing
 Small dimensions
 Tiny vocabulary
 One short training pattern
@@ -816,7 +781,7 @@ No distributed training
 
 The result should therefore be interpreted as:
 
-> **A controlled demonstration that the architecture and learning path of a small Transformer-like model can be made explicit and trainable from scratch.**
+> **A controlled demonstration that a small Transformer-style language model can be assembled from explicit components and trained end-to-end with verified attention gradients.**
 
 That is the purpose of the repository.
 
@@ -1130,33 +1095,21 @@ The project stops at the point where the Transformer architecture and its learni
 
 ---
 
-# Why Synthetic Attention?
+# Why Keep a Synthetic Attention Experiment?
 
-This is the most important architectural limitation in the repository.
+`SyntheticMultiHeadAttention` remains as a controlled fixed-routing baseline for architectural experiments.
 
-The project uses synthetic attention routing instead of rebuilding a second full implementation of scaled dot-product attention.
+`HowAttentionWorks` studies attention mechanisms and their gradient mechanics directly. `HowTransformersWork` studies how attention behaves when assembled into a larger Transformer-style learning system.
 
-That decision has two purposes:
-
-1. `HowAttentionWorks` already exists to explain the internals of scaled dot-product attention.
-2. `HowTransformersWork` exists to explain how attention becomes part of a larger Transformer architecture.
-
-This gives the two repositories distinct responsibilities:
+Keeping the synthetic implementation available makes it possible to compare:
 
 ```text
-HowAttentionWorks
-        │
-        ▼
-Understand Attention Internals
-        │
-        ▼
-HowTransformersWork
-        │
-        ▼
-Understand Transformer Architecture
+controlled fixed routing
+        vs
+learned attention projections
 ```
 
-The synthetic attention component is therefore a teaching abstraction, not a claim that a production Transformer uses fixed attention patterns.
+The important boundary is that the **main language-model training path uses `TrainableMultiHeadAttention`**. Synthetic routing is not used as the learned attention mechanism of the language model.
 
 ---
 
