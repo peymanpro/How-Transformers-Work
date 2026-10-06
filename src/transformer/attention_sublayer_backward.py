@@ -10,13 +10,13 @@ from src.transformer.multi_head_backward import (
     TrainableMultiHeadBackward,
     TrainableMultiHeadGradients,
 )
-from src.transformer.trainable_multi_head import (
-    TrainableMultiHeadAttention,
-    TrainableMultiHeadResult,
-)
 from src.transformer.residual_backward import (
     backward_residual,
     combine_residual_gradients,
+)
+from src.transformer.trainable_multi_head import (
+    TrainableMultiHeadAttention,
+    TrainableMultiHeadResult,
 )
 
 

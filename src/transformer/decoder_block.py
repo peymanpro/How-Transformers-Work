@@ -13,11 +13,11 @@ from src.transformer.feed_forward import (
 from src.transformer.layer_norm import (
     LayerNormalization,
 )
+from src.transformer.residual import add_residual
 from src.transformer.trainable_multi_head import (
     TrainableMultiHeadAttention,
     TrainableMultiHeadResult,
 )
-from src.transformer.residual import add_residual
 
 
 @dataclass(frozen=True)
@@ -67,7 +67,7 @@ class TransformerDecoderBlock:
     @property
     def attention_module(
         self,
-    ) -> SyntheticMultiHeadAttention:
+    ) -> TrainableMultiHeadAttention:
         return self._attention
 
     @property
