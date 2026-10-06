@@ -22,7 +22,6 @@ def main() -> None:
         vocabulary_size=len(TOKENS),
         model_dimension=8,
         head_dimension=2,
-        head_focuses=[0, 1, 2, 2],
         feed_forward_dimension=16,
         maximum_sequence_length=8,
         seed=42,
