@@ -35,13 +35,17 @@ def main() -> None:
     sequence = [0, 1, 2, 3]
     targets = [1, 2, 3, 4]
 
+    initial_loss = trainer.evaluate(
+        sequences=[sequence],
+        targets=[targets],
+    )
+
     history = trainer.train(
         sequences=[sequence],
         targets=[targets],
         epochs=100,
     )
 
-    initial_loss = history[0].average_loss
     final_loss = history[-1].average_loss
 
     print("Tiny Transformer Training")
