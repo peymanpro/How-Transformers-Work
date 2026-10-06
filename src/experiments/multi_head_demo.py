@@ -42,6 +42,7 @@ def main() -> None:
     )
 
     print("Synthetic Multi-Head Self-Attention")
+    print("(controlled fixed-routing experiment)")
     print("===================================")
     print()
     print("Tokens:")
