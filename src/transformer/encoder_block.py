@@ -21,7 +21,7 @@ from src.transformer.residual import add_residual
 @dataclass(frozen=True)
 class TransformerBlockResult:
     input: Matrix
-    attention: MultiHeadResult
+    attention: TrainableMultiHeadResult
     after_attention_sublayer: Matrix
     feed_forward: FeedForwardResult
     feed_forward_output: Matrix
