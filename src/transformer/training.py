@@ -2,6 +2,9 @@
 
 from dataclasses import dataclass
 
+from src.transformer.cross_entropy import (
+    CrossEntropyFromLogits,
+)
 from src.transformer.language_model import (
     TinyTransformerLanguageModel,
 )
@@ -32,6 +35,7 @@ class TransformerTrainer:
         self._step = TransformerTrainingStep(
             learning_rate=learning_rate,
         )
+        self._loss = CrossEntropyFromLogits()
 
     def train(
         self,
@@ -85,9 +89,9 @@ class TransformerTrainer:
 
                 total_loss += result.loss
 
-            average_loss = (
-                total_loss
-                / len(sequences)
+            average_loss = self.evaluate(
+                sequences=sequences,
+                targets=targets,
             )
 
             history.append(
@@ -98,3 +102,45 @@ class TransformerTrainer:
             )
 
         return history
+
+    def evaluate(
+        self,
+        sequences: list[list[int]],
+        targets: list[list[int]],
+    ) -> float:
+        if not sequences:
+            raise ValueError(
+                "Evaluation sequences cannot be empty."
+            )
+
+        if len(sequences) != len(targets):
+            raise ValueError(
+                "Sequences and targets must have equal length."
+            )
+
+        total_loss = 0.0
+
+        for sequence, target in zip(
+            sequences,
+            targets,
+        ):
+            if not sequence:
+                raise ValueError(
+                    "Evaluation sequences cannot contain empty sequences."
+                )
+
+            if len(sequence) != len(target):
+                raise ValueError(
+                    "Each sequence must have a matching target sequence."
+                )
+
+            forward_result = self._model.forward(
+                sequence
+            )
+
+            total_loss += self._loss.loss(
+                forward_result.logits.values,
+                target,
+            )
+
+        return total_loss / len(sequences)
