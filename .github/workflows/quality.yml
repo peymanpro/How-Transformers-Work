@@ -1,5 +1,7 @@
 name: quality
 
+# Keep the from-scratch implementation continuously verified.
+
 on:
   push:
     branches: [main]
