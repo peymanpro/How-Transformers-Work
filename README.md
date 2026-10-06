@@ -1,7 +1,5 @@
 # HowTransformersWork
 
-> **How does a Transformer turn contextual representations into learned next-token predictions?**
-
 <p align="center">
   <img src="docs/assets/transformer-flow.gif" alt="Animated overview of the Transformer forward and training flow" width="100%" />
 </p>
@@ -16,6 +14,7 @@
   <img src="docs/assets/training-backward.svg" alt="Training and backpropagation" width="49%" />
 </p>
 
+> **How does a Transformer turn contextual representations into learned next-token predictions?**
 
 `HowTransformersWork` is a from-scratch **AI / deep-learning project** that assembles and trains a small decoder-style Transformer language model using **Python and NumPy**.
 
@@ -141,6 +140,8 @@ The project contains the major architectural ideas required to understand a smal
 - strict type checking with mypy
 
 The main language-model path uses trainable attention projections. The original synthetic attention implementation remains only as a controlled fixed-routing experiment.
+
+[![Quality](https://github.com/peymanpro/HowTransformersWork/actions/workflows/quality.yml/badge.svg)](https://github.com/peymanpro/HowTransformersWork/actions/workflows/quality.yml)
 
 ---
 
@@ -855,7 +856,8 @@ Decoder Block
  ├── FFN
  ├── Residual
  ├── LayerNorm
- └── Attention Output Projection
+ ├── Attention Q/K/V Projections
+ ├── Attention Output Projection
  │
  ▼
 Embedding Gradients
