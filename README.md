@@ -1,4 +1,4 @@
-# HowTransformersWork
+# How-Transformers-Work
 
 <p align="center">
   <img src="docs/assets/transformer-flow.gif" alt="Animated overview of the Transformer forward and training flow" width="100%" />
@@ -16,7 +16,7 @@
 
 > **How does a Transformer turn contextual representations into learned next-token predictions?**
 
-`HowTransformersWork` is a from-scratch **AI / deep-learning project** that assembles and trains a small decoder-style Transformer language model using **Python and NumPy**.
+`How-Transformers-Work` is a from-scratch **AI / deep-learning project** that assembles and trains a small decoder-style Transformer language model using **Python and NumPy**.
 
 The project starts from the components already understood in [`HowAttentionWorks`](https://github.com/peymanpro/HowAttentionWorks) and moves one architectural level upward:
 
@@ -141,7 +141,7 @@ The project contains the major architectural ideas required to understand a smal
 
 The main language-model path uses trainable attention projections. The original synthetic attention implementation remains only as a controlled fixed-routing experiment.
 
-[![Quality](https://github.com/peymanpro/HowTransformersWork/actions/workflows/quality.yml/badge.svg)](https://github.com/peymanpro/HowTransformersWork/actions/workflows/quality.yml)
+[![Quality](https://github.com/peymanpro/How-Transformers-Work/actions/workflows/quality.yml/badge.svg)](https://github.com/peymanpro/How-Transformers-Work/actions/workflows/quality.yml)
 
 ---
 
@@ -871,7 +871,7 @@ Gradient Descent
 # Project Structure
 
 ```text
-HowTransformersWork/
+How-Transformers-Work/
 │
 ├── src/
 │   ├── attention/
@@ -1107,7 +1107,7 @@ The project stops at the point where the Transformer architecture and its learni
 
 `SyntheticMultiHeadAttention` remains as a controlled fixed-routing baseline for architectural experiments.
 
-`HowAttentionWorks` studies attention mechanisms and their gradient mechanics directly. `HowTransformersWork` studies how attention behaves when assembled into a larger Transformer-style learning system.
+`HowAttentionWorks` studies attention mechanisms and their gradient mechanics directly. `How-Transformers-Work` studies how attention behaves when assembled into a larger Transformer-style learning system.
 
 Keeping the synthetic implementation available makes it possible to compare:
 
@@ -1138,7 +1138,7 @@ The conceptual progression across the two projects is:
                  Multi-Head Architecture
                            │
                            ▼
-               HowTransformersWork
+               How-Transformers-Work
                            │
              ┌─────────────┼─────────────┐
              ▼             ▼             ▼
@@ -1166,7 +1166,7 @@ The repositories form a learning path rather than a collection of unrelated demo
 
 # Learning Path
 
-`HowTransformersWork` is one step in a broader progression:
+`How-Transformers-Work` is one step in a broader progression:
 
 ```text
 HowDeepLearningWorks
@@ -1181,7 +1181,7 @@ HowAttentionWorks
         ↓
 Attention mechanism
         ↓
-HowTransformersWork
+How-Transformers-Work
         ↓
 Transformer architecture
         ↓
