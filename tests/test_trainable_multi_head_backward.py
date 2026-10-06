@@ -181,3 +181,148 @@ def test_trainable_multi_head_backward_should_produce_finite_gradients() -> None
 
     assert np.isfinite(gradients.inputs.data).all()
     assert np.isfinite(gradients.output_weights.data).all()
+
+
+def test_trainable_multi_head_backward_should_match_key_weight_gradient() -> None:
+    attention = TrainableMultiHeadAttention(
+        model_dimension=4,
+        head_dimension=2,
+    )
+    inputs = create_inputs()
+    output_gradient = create_output_gradient()
+    forward_result = attention.forward(inputs)
+
+    analytic = TrainableMultiHeadBackward().backward(
+        attention=attention,
+        forward_result=forward_result,
+        inputs=inputs,
+        output_gradient=output_gradient,
+    )
+
+    epsilon = 1e-6
+    numerical = np.zeros_like(attention.key_weights[0].data)
+
+    def scalar_loss(values: np.ndarray) -> float:
+        original = attention.key_weights
+        replaced = list(original)
+        replaced[0] = Matrix(values)
+        attention._key_weights = tuple(replaced)
+        current = attention.forward(inputs)
+        value = float(np.sum(current.output.data * output_gradient.data))
+        attention._key_weights = original
+        return value
+
+    weight = attention.key_weights[0].data
+
+    for row in range(weight.shape[0]):
+        for column in range(weight.shape[1]):
+            plus = weight.copy()
+            minus = weight.copy()
+            plus[row, column] += epsilon
+            minus[row, column] -= epsilon
+            numerical[row, column] = (
+                scalar_loss(plus) - scalar_loss(minus)
+            ) / (2.0 * epsilon)
+
+    np.testing.assert_allclose(
+        analytic.key_weights[0].data,
+        numerical,
+        rtol=1e-4,
+        atol=1e-5,
+    )
+
+
+def test_trainable_multi_head_backward_should_match_value_weight_gradient() -> None:
+    attention = TrainableMultiHeadAttention(
+        model_dimension=4,
+        head_dimension=2,
+    )
+    inputs = create_inputs()
+    output_gradient = create_output_gradient()
+    forward_result = attention.forward(inputs)
+
+    analytic = TrainableMultiHeadBackward().backward(
+        attention=attention,
+        forward_result=forward_result,
+        inputs=inputs,
+        output_gradient=output_gradient,
+    )
+
+    epsilon = 1e-6
+    numerical = np.zeros_like(attention.value_weights[0].data)
+
+    def scalar_loss(values: np.ndarray) -> float:
+        original = attention.value_weights
+        replaced = list(original)
+        replaced[0] = Matrix(values)
+        attention._value_weights = tuple(replaced)
+        current = attention.forward(inputs)
+        value = float(np.sum(current.output.data * output_gradient.data))
+        attention._value_weights = original
+        return value
+
+    weight = attention.value_weights[0].data
+
+    for row in range(weight.shape[0]):
+        for column in range(weight.shape[1]):
+            plus = weight.copy()
+            minus = weight.copy()
+            plus[row, column] += epsilon
+            minus[row, column] -= epsilon
+            numerical[row, column] = (
+                scalar_loss(plus) - scalar_loss(minus)
+            ) / (2.0 * epsilon)
+
+    np.testing.assert_allclose(
+        analytic.value_weights[0].data,
+        numerical,
+        rtol=1e-4,
+        atol=1e-5,
+    )
+
+
+def test_trainable_multi_head_backward_should_match_output_weight_gradient() -> None:
+    attention = TrainableMultiHeadAttention(
+        model_dimension=4,
+        head_dimension=2,
+    )
+    inputs = create_inputs()
+    output_gradient = create_output_gradient()
+    forward_result = attention.forward(inputs)
+
+    analytic = TrainableMultiHeadBackward().backward(
+        attention=attention,
+        forward_result=forward_result,
+        inputs=inputs,
+        output_gradient=output_gradient,
+    )
+
+    epsilon = 1e-6
+    numerical = np.zeros_like(attention.output_weights.data)
+
+    def scalar_loss(values: np.ndarray) -> float:
+        original = attention.output_weights
+        attention._output_weights = Matrix(values)
+        current = attention.forward(inputs)
+        value = float(np.sum(current.output.data * output_gradient.data))
+        attention._output_weights = original
+        return value
+
+    weight = attention.output_weights.data
+
+    for row in range(weight.shape[0]):
+        for column in range(weight.shape[1]):
+            plus = weight.copy()
+            minus = weight.copy()
+            plus[row, column] += epsilon
+            minus[row, column] -= epsilon
+            numerical[row, column] = (
+                scalar_loss(plus) - scalar_loss(minus)
+            ) / (2.0 * epsilon)
+
+    np.testing.assert_allclose(
+        analytic.output_weights.data,
+        numerical,
+        rtol=1e-4,
+        atol=1e-5,
+    )
