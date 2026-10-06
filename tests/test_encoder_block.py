@@ -11,7 +11,6 @@ def create_block() -> TransformerEncoderBlock:
     return TransformerEncoderBlock(
         model_dimension=8,
         head_dimension=2,
-        head_focuses=[0, 1, 2, 2],
         feed_forward_dimension=16,
         seed=42,
     )
@@ -115,6 +114,5 @@ def test_encoder_block_should_reject_invalid_model_dimension() -> None:
         TransformerEncoderBlock(
             model_dimension=0,
             head_dimension=1,
-            head_focuses=[0],
             feed_forward_dimension=4,
         )
