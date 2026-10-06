@@ -75,8 +75,6 @@ class TransformerTrainer:
         history: list[TrainingEpochResult] = []
 
         for epoch in range(1, epochs + 1):
-            total_loss = 0.0
-
             for sequence, target in zip(
                 sequences,
                 targets,
@@ -86,8 +84,6 @@ class TransformerTrainer:
                     token_ids=sequence,
                     targets=target,
                 )
-
-                total_loss += result.loss
 
             average_loss = self.evaluate(
                 sequences=sequences,
