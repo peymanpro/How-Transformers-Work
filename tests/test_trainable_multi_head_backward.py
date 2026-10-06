@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 
 from src.math.matrix import Matrix
 from src.transformer.multi_head_backward import (
