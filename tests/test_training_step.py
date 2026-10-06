@@ -108,3 +108,29 @@ def test_training_should_change_transformer_internal_parameters() -> None:
         ffw2_before
         == model._decoder._feed_forward.weights_2.data
     ).all()
+
+
+def test_training_should_update_attention_projections() -> None:
+    model = create_model()
+
+    query_before = model.attention_module.query_weights[0].data
+    key_before = model.attention_module.key_weights[0].data
+    value_before = model.attention_module.value_weights[0].data
+
+    TransformerTrainingStep(
+        learning_rate=0.05,
+    ).run(
+        model=model,
+        token_ids=[0, 1, 2, 3],
+        targets=[1, 2, 3, 4],
+    )
+
+    assert not (
+        query_before == model.attention_module.query_weights[0].data
+    ).all()
+    assert not (
+        key_before == model.attention_module.key_weights[0].data
+    ).all()
+    assert not (
+        value_before == model.attention_module.value_weights[0].data
+    ).all()
