@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="320" viewBox="0 0 960 320">
+<rect width="960" height="320" fill="#f8fafc"/>
+<text x="40" y="42" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#0f172a">Training and Backpropagation</text>
+<text x="40" y="69" font-family="Arial,sans-serif" font-size="16" fill="#475569">Gradients are derived explicitly instead of delegated to an automatic differentiation framework</text>
+<g font-family="Arial,sans-serif" font-size="16" font-weight="700" text-anchor="middle">
+<rect x="45" y="125" width="130" height="52" rx="14" fill="#fff" stroke="#e2e8f0"/><text x="110" y="157" fill="#0f172a">Forward Pass</text>
+<rect x="215" y="125" width="130" height="52" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/><text x="280" y="157" fill="#2563eb">Cross-Entropy</text>
+<rect x="385" y="125" width="130" height="52" rx="14" fill="#fff" stroke="#e2e8f0"/><text x="450" y="157" fill="#0f172a">Backward</text>
+<rect x="555" y="125" width="130" height="52" rx="14" fill="#fff" stroke="#e2e8f0"/><text x="620" y="157" fill="#0f172a">Finite-Difference Check</text>
+<rect x="725" y="125" width="130" height="52" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/><text x="790" y="157" fill="#2563eb">Gradient Descent</text>
+</g>
+<g stroke="#0ea5e9" stroke-width="3" stroke-linecap="round">
+<line x1="177" y1="151" x2="209" y2="151"/><line x1="347" y1="151" x2="379" y2="151"/><line x1="517" y1="151" x2="549" y2="151"/><line x1="687" y1="151" x2="719" y2="151"/>
+</g>
+<text x="40" y="225" font-family="Arial,sans-serif" font-size="15" fill="#475569">The gradient path reaches embeddings, Q/K/V projections, output projection, FFN parameters, and vocabulary projection.</text>
+<text x="40" y="252" font-family="Arial,sans-serif" font-size="15" fill="#10b981">Numerical checks provide an independent reference for analytical derivatives.</text>
+</svg>

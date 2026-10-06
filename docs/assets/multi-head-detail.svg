@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="340" viewBox="0 0 960 340">
+<rect width="960" height="340" fill="#f8fafc"/>
+<text x="40" y="42" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#0f172a">Trainable Multi-Head Attention</text>
+<text x="40" y="69" font-family="Arial,sans-serif" font-size="16" fill="#475569">Each head learns its own Q/K/V projections before concatenation and output projection</text>
+<rect x="40" y="125" width="90" height="52" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/><text x="85" y="157" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#2563eb">Input X</text>
+<g font-family="Arial" font-size="16" font-weight="700" text-anchor="middle">
+<rect x="190" y="90" width="130" height="48" rx="14" fill="#fff" stroke="#e2e8f0"/><text x="255" y="120" fill="#0f172a">Head 1: Q K V</text>
+<rect x="190" y="150" width="130" height="48" rx="14" fill="#fff" stroke="#e2e8f0"/><text x="255" y="180" fill="#0f172a">Head 2: Q K V</text>
+<rect x="190" y="210" width="130" height="48" rx="14" fill="#fff" stroke="#e2e8f0"/><text x="255" y="240" fill="#0f172a">Head N: Q K V</text>
+<rect x="425" y="125" width="150" height="52" rx="14" fill="#fff" stroke="#e2e8f0"/><text x="500" y="157" fill="#0f172a">scaled scores + softmax</text>
+<rect x="625" y="125" width="115" height="52" rx="14" fill="#fff" stroke="#e2e8f0"/><text x="682" y="157" fill="#0f172a">Concatenate</text>
+<rect x="790" y="125" width="120" height="52" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/><text x="850" y="157" fill="#2563eb">Output W₀</text>
+</g>
+<g stroke="#0ea5e9" stroke-width="3" stroke-linecap="round">
+<line x1="132" y1="151" x2="180" y2="114"/><line x1="132" y1="151" x2="180" y2="174"/><line x1="132" y1="151" x2="180" y2="234"/>
+<line x1="322" y1="114" x2="418" y2="151"/><line x1="322" y1="174" x2="418" y2="151"/><line x1="322" y1="234" x2="418" y2="151"/>
+<line x1="578" y1="151" x2="617" y2="151"/><line x1="742" y1="151" x2="782" y2="151"/>
+</g>
+<text x="40" y="305" font-family="Arial" font-size="15" fill="#475569">Causal masking is applied before softmax when the module is configured for autoregressive decoding.</text>
+</svg>
