@@ -79,7 +79,7 @@ class TransformerTrainer:
                 sequences,
                 targets,
             ):
-                result = self._step.run(
+                self._step.run(
                     model=self._model,
                     token_ids=sequence,
                     targets=target,
