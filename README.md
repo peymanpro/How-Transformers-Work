@@ -896,6 +896,7 @@ HowTransformersWork/
 │   │   ├── layer_norm.py
 │   │   ├── layer_norm_backward.py
 │   │   ├── multi_head.py
+│   │   ├── trainable_multi_head.py
 │   │   ├── multi_head_backward.py
 │   │   ├── output_head.py
 │   │   ├── output_head_backward.py
@@ -916,8 +917,16 @@ HowTransformersWork/
 │       ├── multi_head_demo.py
 │       ├── residual_demo.py
 │       ├── training_demo.py
+│       ├── trainable_multi_head_demo.py
 │       └── transformer_input_demo.py
 │
+├── docs/
+│   └── assets/
+│       ├── transformer-flow.gif
+│       ├── transformer-architecture.svg
+│       ├── multi-head-detail.svg
+│       ├── block-detail.svg
+│       └── training-backward.svg
 ├── tests/
 ├── pyproject.toml
 └── README.md
@@ -929,10 +938,10 @@ The names intentionally mirror the conceptual architecture so that the code can 
 
 # Testing
 
-The repository currently contains:
+The current CI suite verifies the repository with:
 
 ```text
-111 passed
+127 passed
 ```
 
 Run:
@@ -975,24 +984,21 @@ Positional Encoding
 Transformer Input
 ```
 
-### Multi-Head Attention
+### Trainable Multi-Head Attention
+
+```bash
+python -m src.experiments.trainable_multi_head_demo
+```
+
+Shows the trainable attention module, per-head attention weights, concatenated head outputs, and the final output projection.
+
+### Synthetic Multi-Head Attention
 
 ```bash
 python -m src.experiments.multi_head_demo
 ```
 
-Shows:
-
-```text
-Head 1
-Head 2
-Head 3
-Head 4
-   ↓
-Concatenate
-   ↓
-W₀
-```
+Shows the controlled fixed-routing experiment and keeps it separate from the trainable model.
 
 ### Encoder Block
 
@@ -1244,4 +1250,4 @@ No deep-learning framework is required for the core implementation.
 
 # License
 
-MIT
+MIT. See [LICENSE](LICENSE).
