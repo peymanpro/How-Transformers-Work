@@ -17,8 +17,8 @@ from src.transformer.feed_forward_backward import (
 from src.transformer.layer_norm_backward import (
     LayerNormalizationBackward,
 )
-from src.transformer.multi_head import (
-    SyntheticMultiHeadAttention,
+from src.transformer.trainable_multi_head import (
+    TrainableMultiHeadAttention,
 )
 from src.transformer.residual_backward import (
     backward_residual,
@@ -36,7 +36,7 @@ class TransformerBlockGradients:
 class TransformerEncoderBlockBackward:
     def backward(
         self,
-        block: SyntheticMultiHeadAttention,
+        block: TrainableMultiHeadAttention,
         forward_result: TransformerBlockResult,
         output_gradient: Matrix,
         feed_forward_weights_1: Matrix,

@@ -6,13 +6,13 @@ from src.math.matrix import Matrix
 from src.transformer.layer_norm_backward import (
     LayerNormalizationBackward,
 )
-from src.transformer.multi_head import (
-    MultiHeadResult,
-    SyntheticMultiHeadAttention,
-)
 from src.transformer.multi_head_backward import (
-    MultiHeadGradients,
-    SyntheticMultiHeadBackward,
+    TrainableMultiHeadBackward,
+    TrainableMultiHeadGradients,
+)
+from src.transformer.trainable_multi_head import (
+    TrainableMultiHeadAttention,
+    TrainableMultiHeadResult,
 )
 from src.transformer.residual_backward import (
     backward_residual,
@@ -23,15 +23,15 @@ from src.transformer.residual_backward import (
 @dataclass(frozen=True)
 class AttentionSublayerGradients:
     input: Matrix
-    attention: MultiHeadGradients
+    attention: TrainableMultiHeadGradients
 
 
 class AttentionSublayerBackward:
     def backward(
         self,
-        attention: SyntheticMultiHeadAttention,
+        attention: TrainableMultiHeadAttention,
         inputs: Matrix,
-        forward_result: MultiHeadResult,
+        forward_result: TrainableMultiHeadResult,
         output_gradient: Matrix,
     ) -> AttentionSublayerGradients:
         residual_output = inputs.add(
@@ -52,7 +52,7 @@ class AttentionSublayerBackward:
         )
 
         attention_gradients = (
-            SyntheticMultiHeadBackward().backward(
+            TrainableMultiHeadBackward().backward(
                 attention=attention,
                 forward_result=forward_result,
                 inputs=inputs,
