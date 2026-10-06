@@ -59,6 +59,15 @@ class TransformerTrainingStep:
         )
         model.apply_gradients(
             embedding_gradient=gradients.token_embedding,
+            attention_query_gradients=(
+                gradients.decoder.attention.attention.query_weights
+            ),
+            attention_key_gradients=(
+                gradients.decoder.attention.attention.key_weights
+            ),
+            attention_value_gradients=(
+                gradients.decoder.attention.attention.value_weights
+            ),
             attention_output_gradient=(
                 gradients.decoder.attention.attention.output_weights
             ),

@@ -8,8 +8,8 @@ from src.transformer.decoder_block import (
     TransformerDecoderBlockResult,
 )
 from src.transformer.embedding import TokenEmbedding
-from src.transformer.multi_head import (
-    SyntheticMultiHeadAttention,
+from src.transformer.trainable_multi_head import (
+    TrainableMultiHeadAttention,
 )
 from src.transformer.output_head import (
     TokenLogits,
@@ -34,7 +34,6 @@ class TinyTransformerLanguageModel:
         vocabulary_size: int,
         model_dimension: int,
         head_dimension: int,
-        head_focuses: list[int],
         feed_forward_dimension: int,
         maximum_sequence_length: int,
         seed: int = 42,
@@ -55,7 +54,6 @@ class TinyTransformerLanguageModel:
         self._decoder = TransformerDecoderBlock(
             model_dimension=model_dimension,
             head_dimension=head_dimension,
-            head_focuses=head_focuses,
             feed_forward_dimension=feed_forward_dimension,
             seed=seed,
         )
@@ -77,7 +75,7 @@ class TinyTransformerLanguageModel:
     @property
     def attention_module(
         self,
-    ) -> SyntheticMultiHeadAttention:
+    ) -> TrainableMultiHeadAttention:
         return self._decoder.attention_module
 
     @property
@@ -105,6 +103,9 @@ class TinyTransformerLanguageModel:
     def apply_gradients(
         self,
         embedding_gradient: Matrix,
+        attention_query_gradients: tuple[Matrix, ...],
+        attention_key_gradients: tuple[Matrix, ...],
+        attention_value_gradients: tuple[Matrix, ...],
         attention_output_gradient: Matrix,
         feed_forward_weights_1_gradient: Matrix,
         feed_forward_bias_1_gradient: Matrix,
@@ -119,8 +120,11 @@ class TinyTransformerLanguageModel:
             learning_rate=learning_rate,
         )
 
-        self._decoder.attention_module.apply_output_gradient(
-            gradient=attention_output_gradient,
+        self._decoder.attention_module.apply_gradients(
+            query_gradients=attention_query_gradients,
+            key_gradients=attention_key_gradients,
+            value_gradients=attention_value_gradients,
+            output_gradient=attention_output_gradient,
             learning_rate=learning_rate,
         )
 

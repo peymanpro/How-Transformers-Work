@@ -13,9 +13,9 @@ from src.transformer.feed_forward import (
 from src.transformer.layer_norm import (
     LayerNormalization,
 )
-from src.transformer.multi_head import (
-    MultiHeadResult,
-    SyntheticMultiHeadAttention,
+from src.transformer.trainable_multi_head import (
+    TrainableMultiHeadAttention,
+    TrainableMultiHeadResult,
 )
 from src.transformer.residual import add_residual
 
@@ -35,7 +35,6 @@ class TransformerDecoderBlock:
         self,
         model_dimension: int,
         head_dimension: int,
-        head_focuses: list[int],
         feed_forward_dimension: int,
         seed: int = 42,
     ) -> None:
@@ -44,10 +43,9 @@ class TransformerDecoderBlock:
                 "model_dimension must be positive."
             )
 
-        self._attention = SyntheticMultiHeadAttention(
+        self._attention = TrainableMultiHeadAttention(
             model_dimension=model_dimension,
             head_dimension=head_dimension,
-            focuses=head_focuses,
             seed=seed,
             causal=True,
         )
