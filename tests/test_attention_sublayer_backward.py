@@ -5,17 +5,17 @@ from src.math.matrix import Matrix
 from src.transformer.attention_sublayer_backward import (
     AttentionSublayerBackward,
 )
-from src.transformer.multi_head import (
-    SyntheticMultiHeadAttention,
+from src.transformer.trainable_multi_head import (
+    TrainableMultiHeadAttention,
 )
 
 
-def create_attention() -> SyntheticMultiHeadAttention:
-    return SyntheticMultiHeadAttention(
+def create_attention() -> TrainableMultiHeadAttention:
+    return TrainableMultiHeadAttention(
         model_dimension=8,
         head_dimension=2,
-        focuses=[0, 1, 2, 2],
         seed=42,
+        causal=True,
     )
 
 
