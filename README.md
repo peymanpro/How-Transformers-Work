@@ -706,7 +706,10 @@ The trainable parameters include:
 
 ```text
 Token Embeddings
-Attention Output Projection
+Per-head Q Projections
+Per-head K Projections
+Per-head V Projections
+Attention Output Projection W₀
 Feed-Forward W₁
 Feed-Forward b₁
 Feed-Forward W₂
@@ -715,7 +718,7 @@ Vocabulary Projection
 Vocabulary Bias
 ```
 
-The attention routing itself remains synthetic and fixed.
+The main language-model path therefore learns the attention projections themselves.
 
 ---
 
