@@ -284,8 +284,9 @@ class TrainableMultiHeadAttention:
             keepdims=True,
         )
         exponentials = np.exp(shifted)
-        return exponentials / np.sum(
+        normalized = exponentials / np.sum(
             exponentials,
             axis=1,
             keepdims=True,
         )
+        return np.asarray(normalized, dtype=np.float64)
