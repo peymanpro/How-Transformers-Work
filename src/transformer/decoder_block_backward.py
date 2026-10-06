@@ -17,12 +17,12 @@ from src.transformer.feed_forward_backward import (
 from src.transformer.layer_norm_backward import (
     LayerNormalizationBackward,
 )
-from src.transformer.trainable_multi_head import (
-    TrainableMultiHeadAttention,
-)
 from src.transformer.residual_backward import (
     backward_residual,
     combine_residual_gradients,
+)
+from src.transformer.trainable_multi_head import (
+    TrainableMultiHeadAttention,
 )
 
 
