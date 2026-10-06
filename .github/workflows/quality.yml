@@ -1,6 +1,7 @@
 name: quality
 
 # Keep the from-scratch implementation continuously verified.
+# The training path includes analytical and finite-difference gradient checks.
 
 on:
   push:
