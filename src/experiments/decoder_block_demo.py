@@ -28,7 +28,6 @@ def main() -> None:
     decoder = TransformerDecoderBlock(
         model_dimension=8,
         head_dimension=2,
-        head_focuses=[0, 1, 2, 2],
         feed_forward_dimension=16,
         seed=42,
     )
