@@ -17,7 +17,7 @@
 </p>
 
 
-`HowTransformersWork` is a from-scratch **AI / deep-learning project** that assembles and trains a small Transformer-like language model using **Python and NumPy**.
+`HowTransformersWork` is a from-scratch **AI / deep-learning project** that assembles and trains a small decoder-style Transformer language model using **Python and NumPy**.
 
 The project starts from the components already understood in [`HowAttentionWorks`](https://github.com/peymanpro/HowAttentionWorks) and moves one architectural level upward:
 
@@ -115,9 +115,10 @@ The project contains the major architectural ideas required to understand a smal
 
 - token embeddings
 - sinusoidal positional encoding
-- synthetic multi-head self-attention
-- causal attention routing
-- attention output projection
+- trainable multi-head self-attention
+- causal attention masking
+- trainable per-head Q/K/V projections
+- trainable attention output projection
 - residual connections
 - layer normalization
 - position-wise feed-forward network
@@ -139,7 +140,7 @@ The project contains the major architectural ideas required to understand a smal
 - static analysis with Ruff
 - strict type checking with mypy
 
-The important distinction is that the **attention routing itself is synthetic and fixed** in this educational version. The trainable parts around that routing are learned through gradient descent.
+The main language-model path uses trainable attention projections. The original synthetic attention implementation remains only as a controlled fixed-routing experiment.
 
 ---
 
@@ -284,11 +285,9 @@ Conceptually:
               Multi-Head Output
 ```
 
-In a conventional Transformer, each head learns its own query, key, and value projections.
+Each head in the main implementation learns its own query, key, and value projections. The attention weights are computed from those learned projections through scaled dot-product attention.
 
-In this educational implementation, the attention routing is **synthetic and fixed**. This keeps the architectural flow inspectable while still allowing the surrounding representation and transformation parameters to learn.
-
-That limitation is intentional and documented rather than hidden.
+The repository also keeps `SyntheticMultiHeadAttention` as a separate controlled experiment for isolating fixed-routing behavior.
 
 ---
 
