@@ -8,15 +8,15 @@ from src.transformer.decoder_block import (
     TransformerDecoderBlockResult,
 )
 from src.transformer.embedding import TokenEmbedding
-from src.transformer.trainable_multi_head import (
-    TrainableMultiHeadAttention,
-)
 from src.transformer.output_head import (
     TokenLogits,
     VocabularyProjection,
 )
 from src.transformer.positional_encoding import (
     SinusoidalPositionalEncoding,
+)
+from src.transformer.trainable_multi_head import (
+    TrainableMultiHeadAttention,
 )
 
 
